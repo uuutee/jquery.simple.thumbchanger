@@ -14,15 +14,19 @@
 			easing:        'linear',
 			animateTime:   300,
 			fixHeight:     true,
-			onload: true
+			onload:        true
 		}, options);
 
-		var _this = $(this);
+		var $_this          = $(this),
+			$mainImages     = $(this).find(settings.mainImageArea + ' div'),
+			$mainImageFirst = $(this).find(settings.mainImageArea + ' div:first'),
+			$subImages      = $(this).find(settings.subImageArea + ' div'),
+			$subImageFirst  = $(this).find(settings.subImageArea + ' div:first');
 
 		function init(obj){
 			obj.each(function(){
-				obj.find(settings.mainImageArea + ' div:first').css({'z-index': '1', 'opacity': 1});
-				$(settings.subImageArea + ' div:first').addClass('active');
+				$mainImageFirst.css({'z-index': '1', 'opacity': 1});
+				$subImageFirst.addClass('active');
 				$(settings.subImageArea + ' div:last').addClass('last');
 
 				// fixHeight
@@ -42,22 +46,18 @@
 
 		if (settings.onload) {
 			$(window).on('load', function(){
-				init(_this);
+				init($_this);
 			});
 		} else {
-			$(document).on('ready', function() {
-				init(_this);
-			});
+			init($_this);
 		}
 
-		$(settings.subImageArea + ' div').on(settings.trigger, function(){
+		$subImages.on(settings.trigger, function(){
 			var thisIndex = $(this).index();
 			$(this).addClass('active');
 			$(this).siblings().removeClass('active');
-			$(settings.mainImageArea + ' div').hide().css({'z-index': '-1'}).animate({'opacity': 0}, {'duration': settings.animateTime, 'easing': settings.easing, 'queue': false});
-			$(settings.mainImageArea + ' div').eq(thisIndex).show().css({'z-index': '1'}).animate({'opacity': 1}, {'duration': settings.animateTime, 'easing': settings.easing, 'queue': false});
+			$mainImages.hide().css({'z-index': '-1'}).animate({'opacity': 0}, {'duration': settings.animateTime, 'easing': settings.easing, 'queue': false});
+			$mainImages.eq(thisIndex).show().css({'z-index': '1'}).animate({'opacity': 1}, {'duration': settings.animateTime, 'easing': settings.easing, 'queue': false});
 		});
 	};
-
-
 })(jQuery);
